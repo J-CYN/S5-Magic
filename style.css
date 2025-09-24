@@ -1,0 +1,44 @@
+body {
+    background-color:aquamarine;
+}
+
+h1{
+    text-align: center;
+    font-size: 50px;
+    font-family: "Times New Roman";
+}
+
+p{
+    text-align: center;
+}
+
+button{
+
+    text-align: center;
+    border-radius: 100%;
+    font-size: 16px
+}
+
+.circular-button{
+    background-color: #deb887;
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    border: none;
+    cursor: pointer;
+    align-items: center;
+}
+
+.circular-button:hover {
+    background-color: #88733d;
+}
+
+.button-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 80px);
+    gap: 10px;
+}
+
+.overview{
+    
+}
