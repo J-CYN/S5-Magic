@@ -39,6 +39,21 @@ button{
     gap: 10px;
 }
 
-.overview{
-    
+label {
+
+}
+
+input {
+    border-radius: 1px;
+    padding: 3px 3px;
+}
+
+form {
+    display: grid;
+    gap: 5px;
+}
+
+.form-group {
+    max-width: 700px;
+    display: grid;
 }
