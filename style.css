@@ -14,7 +14,7 @@ p{
     text-align: center;
 }
 
-.buttons_and_form{/*CHECK THIS OUT*/
+.buttons_and_form{/*review this*/
     display: flex;
     justify-content: center;
     align-items: flex-start;
@@ -24,9 +24,6 @@ p{
 /* Buttons*/
 
 button{
-
-    text-align: center;
-    border-radius: 100%;
     font-size: 16px
 }
 
@@ -40,6 +37,10 @@ button{
     align-items: center;
 }
 
+.circular-button:clicked {
+    background-color: #2fa749;
+}
+
 .circular-button:hover {
     background-color: #88733d;
 }
@@ -49,7 +50,8 @@ button{
     display: inline-grid;
     grid-template-columns: repeat(5, 80px);
     gap: 10px;
-    padding: 15px
+    padding: 15px;
+    border-radius: 20px;
 }
 
 /*#my-button:clicked*/
@@ -71,10 +73,10 @@ form {
     background-color: #88733d;
 }
 
-.form-total{ /*CHECK THIS OUT*/
+.form-total{ 
     width: 400px;
-    display: flex;
-    flex-direction: column;
+    display: flex; 
+    flex-direction: column; /*Review this*/
     gap: 15px;
     background-color: #f5f5dc;
     padding: 20px;
