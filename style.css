@@ -1,3 +1,5 @@
+/* Basic Conditions */
+
 body {
     background-color:aquamarine;
 }
@@ -11,6 +13,15 @@ h1{
 p{
     text-align: center;
 }
+
+.buttons_and_form{/*CHECK THIS OUT*/
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 60px; /* space between the grids, so I can maybe change this later */
+    padding: 40px;
+}
+/* Buttons*/
 
 button{
 
@@ -34,15 +45,16 @@ button{
 }
 
 .button-grid {
-    display: grid;
+    background-color: #efdcc1;
+    display: inline-grid;
     grid-template-columns: repeat(5, 80px);
     gap: 10px;
+    padding: 15px
 }
 
-label {
+/*#my-button:clicked*/
 
-}
-
+/* Input Form */
 input {
     border-radius: 1px;
     padding: 3px 3px;
@@ -53,7 +65,18 @@ form {
     gap: 5px;
 }
 
-.form-group {
+.form-group{
     max-width: 700px;
     display: grid;
+    background-color: #88733d;
+}
+
+.form-total{ /*CHECK THIS OUT*/
+    width: 400px;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    background-color: #f5f5dc;
+    padding: 20px;
+    border-radius: 8px;
 }
