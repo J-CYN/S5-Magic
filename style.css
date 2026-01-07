@@ -1,17 +1,31 @@
 /* Basic Conditions */
 
+header{
+    background:rgb(1, 152, 109);
+    color:rgb(35, 8, 47);
+    padding:1rem 1.25rem;
+    display:flex; 
+    align-items:center; 
+    justify-content: center;
+}
+
 body {
-    background-color:aquamarine;
+    background-color:rgb(35, 8, 47);
+    margin: 0;
 }
 
 h1{
     text-align: center;
-    font-size: 50px;
-    font-family: "Times New Roman";
+    font-size: 100px;
+    font-family: "Tangerine";
+    color: rgb(35, 8, 47);
+    margin-top: 0.15em;
+    margin-bottom: 0.15em;
 }
 
 p{
     text-align: center;
+    color: rgb(1, 152, 109);
 }
 
 .buttons_and_form{/*review this*/
@@ -24,7 +38,7 @@ p{
 /* Buttons*/
 
 button{
-    font-size: 16px
+    font-size: 16px;
 }
 
 .circular-button{
@@ -34,27 +48,29 @@ button{
     border-radius: 50%;
     border: none;
     cursor: pointer;
+    display: flex;
     align-items: center;
-}
-
-.circular-button:clicked {
-    background-color: #2fa749;
+    justify-content: center;
 }
 
 .circular-button:hover {
     background-color: #88733d;
 }
 
+.circular-button.selected {
+    background-color: rgb(1, 152, 109);
+}
+
+
+
 .button-grid {
     background-color: #efdcc1;
     display: inline-grid;
-    grid-template-columns: repeat(5, 80px);
+    grid-template-columns: repeat(10, 80px);
     gap: 10px;
     padding: 15px;
     border-radius: 20px;
 }
-
-/*#my-button:clicked*/
 
 /* Input Form */
 input {
@@ -71,6 +87,8 @@ form {
     max-width: 700px;
     display: grid;
     background-color: #88733d;
+    border-radius: 8px;
+    padding: 5px;
 }
 
 .form-total{ 
