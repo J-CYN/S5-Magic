@@ -104,15 +104,14 @@ let table = new p5(function(p) { // Use p to access p5 functions directly
 
             // draw lines
             let used = usedNodes();
-
-            if (currentLine.includes(node_ind)) {
+            if (currentLine.includes(node_ind) && lines.length < lineColors.length) { // This statement prevents color changes after the three lines are placed
                 p.fill(lineColors[lines.length]);      // if currently selected
             } else if (used[node_ind] !== undefined) {
-                p.fill(lineColors[used[node_ind]]);    // color of the line depending on when selected previously
+                p.fill(lineColors[used[node_ind]]);    // if selected before
             } else if (node_ind === hoveredNode) {
-                p.fill('#88733d');
+                p.fill('#88733d'); // If hovered
             } else {
-                p.fill('#deb887');
+                p.fill('#deb887'); // If idle
             }
 
             p.noStroke();
@@ -121,7 +120,11 @@ let table = new p5(function(p) { // Use p to access p5 functions directly
     };
 
     p.mouseMoved = function() {
-        hoveredNode = nearestNode(p.mouseX, p.mouseY);
+        if (lines.length >= 3) {
+            hoveredNode = -1; //If lines are already selected, don't hover
+        } else {
+            hoveredNode = nearestNode(p.mouseX, p.mouseY); //Otherwise hover
+        }
         p.redraw();
     };
 
