@@ -11,10 +11,10 @@ function nearestNode(sel_x, sel_y) {
 
 //Used to create help nodes
 function usedNodes() {
-    let used = [];
+    let used = {};
     for (let l = 0; l < lines.length; l++) {
         for (let n = 0; n < lines[l].length; n++) {
-            used.push(lines[l][n]);
+            used[lines[l][n]] = l;  // sets the value of used for a certain node index to a specific line
         }
     }
     return used;
@@ -40,7 +40,6 @@ function clearAll() {
 }
 
 //Draw the lines with arrows to denote direction
-
 function drawArrow(p, posA, posB) {
     let angle = Math.atan2(posB.y - posA.y, posB.x - posA.x);
     let midX = (posA.x + posB.x) / 2;
@@ -61,6 +60,9 @@ let lines = [];
 let currentLine = [];
 let dragging = false;
 let hoveredNode = -1;
+
+//Color list
+const lineColors = ['rgb(2, 194, 140)', '#c084fc', '#f97316'];
 
 let table = new p5(function(p) { // Use p to access p5 functions directly
    
@@ -101,12 +103,16 @@ let table = new p5(function(p) { // Use p to access p5 functions directly
             let pos = nodePos(node_ind);
 
             // draw lines
-            if (currentLine.includes(node_ind) || usedNodes().includes(node_ind)) {
-                p.fill('rgb(2, 194, 140)'); // if currently selected or selected previously
+            let used = usedNodes();
+
+            if (currentLine.includes(node_ind)) {
+                p.fill(lineColors[lines.length]);      // if currently selected
+            } else if (used[node_ind] !== undefined) {
+                p.fill(lineColors[used[node_ind]]);    // color of the line depending on when selected previously
             } else if (node_ind === hoveredNode) {
-                p.fill('#88733d'); // hovered
+                p.fill('#88733d');
             } else {
-                p.fill('#deb887'); // idle
+                p.fill('#deb887');
             }
 
             p.noStroke();
@@ -124,20 +130,17 @@ let table = new p5(function(p) { // Use p to access p5 functions directly
             return;
 
         let n = nearestNode(p.mouseX, p.mouseY);
-        if (n !== -1) {
+        if (n !== -1 && usedNodes()[n] === undefined) {
             dragging = true;
             currentLine = [n];
-            if (n !== -1 && !usedNodes().includes(n)) {
-                dragging = true;
-                currentLine = [n];
-                p.redraw();
-            }
+            p.redraw();
         }
     };
 
+
     p.mouseDragged = function() {
         let n = nearestNode(p.mouseX, p.mouseY);
-        if (n !== -1 && !currentLine.includes(n) && !usedNodes().includes(n)) {
+        if (n !== -1 && !currentLine.includes(n) && usedNodes()[n] === undefined) {
             currentLine.push(n);
         }
         p.redraw();
