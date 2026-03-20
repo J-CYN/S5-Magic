@@ -42,26 +42,6 @@ button{
     font-size: 16px;
 }
 
-.circular-button{
-    background-color: #deb887;
-    width: 80px;
-    height: 80px;
-    border-radius: 50%;
-    border: none;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.circular-button:hover {
-    background-color: #88733d;
-}
-
-.circular-button.selected {
-    background-color: rgb(2, 194, 140);
-}
-
 .subbutton {
     font-size: 20px;
     background:rgb(2, 194, 140); 
@@ -72,15 +52,6 @@ button{
     font-weight:600; 
     cursor:pointer;
     margin-top: 2px;
-}
-
-.button-grid {
-    background-color: #efdcc1;
-    display: inline-grid;
-    grid-template-columns: repeat(10, 80px);
-    gap: 10px;
-    padding: 15px;
-    border-radius: 20px;
 }
 
 /* Input Form */
@@ -105,9 +76,21 @@ form {
 .form-total{ 
     width: 400px;
     display: flex; 
-    flex-direction: column; /*Review this*/
+    flex-direction: column;
     gap: 15px;
     background-color: #f5f5dc;
     padding: 20px;
     border-radius: 8px;
+}
+
+/*Use this later to edit how the canvas looks*/
+#node-canvas {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#node-canvas canvas {
+    display: block;
+    border-radius: 20px;
 }

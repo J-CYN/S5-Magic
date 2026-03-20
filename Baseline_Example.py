@@ -1,13 +1,14 @@
 from flask import Flask, request, jsonify, render_template
+
 import sqlite3 
-con=sqlite3.connect("spells.db")
+
+con=sqlite3.connect("spells.db") # NEED TO IMPLEMENT A SELECTOR
 con.execute("PRAGMA journal_mode=WAL;")
 cur=con.cursor()
 
-
 app = Flask(__name__)
 
-DB_PATH = "spells.db"
+DB_PATH = "spells.db" # NEED TO IMPLEMENT A SELECTOR
 
 @app.get("/")
 def homepage():
@@ -22,9 +23,7 @@ def create():
       CREATE TABLE IF NOT EXISTS SpellTable(
          spell_id TEXT PRIMARY KEY,
          spell_name TEXT NOT NULL,
-         description TEXT,
          mana_cost INTEGER NOT NULL,
-         type TEXT NOT NULL
       );
    """)
    con.commit()
@@ -33,20 +32,18 @@ def create():
 
 @app.post("/api/insert")
 def insert(spell):
-   #spell = ('1', 'Fireball', 'A ball of fire', 10, 'Offensive')
+   #spell = ('1', 'Fireball', 10, 'Offensive')
    data = request.get_json()
    spell = (
       data['spell_id'],
       data['spell_name'],
-      data.get('description', ''),
       data['mana_cost'],
-      data['type']
    )
    con = sqlite3.connect(DB_PATH)
    con.execute("PRAGMA journal_mode=WAL;")
    cur = con.cursor()
    cur.execute(
-   "INSERT INTO SpellTable (spell_id, spell_name, description, mana_cost, type) VALUES (?, ?, ?, ?, ?)",
+   "INSERT INTO SpellTable (spell_id, spell_name, mana_cost) VALUES (?, ?, ?)",
    spell
    )
    con.commit()
