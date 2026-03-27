@@ -2,13 +2,26 @@ from flask import Flask, request, jsonify, render_template
 
 import sqlite3 
 
-con=sqlite3.connect("spells.db") # NEED TO IMPLEMENT A SELECTOR
-con.execute("PRAGMA journal_mode=WAL;")
-cur=con.cursor()
+def three_database_selector():
+   #depending on what is put in first, change output
+   _
+
+#def five_database_selector():
+   #depending on what is put in first, change output
+#   _
+
+#def nine_database_selector():
+   #depending on what is put in first, change output
+#   _
+
+# Load in and create the elemental_table
+conElem=sqlite3.connect("elements.db")
+conElem.execute("PRAGMA journal_mode=WAL;")
+curElem=conElem.cursor()
 
 app = Flask(__name__)
 
-DB_PATH = "spells.db" # NEED TO IMPLEMENT A SELECTOR
+#DB_PATH = "spells.db" # NEED TO IMPLEMENT A SELECTOR
 
 @app.get("/")
 def homepage():
@@ -21,9 +34,9 @@ def create():
    cur = con.cursor()
    cur.execute("""
       CREATE TABLE IF NOT EXISTS SpellTable(
-         spell_id TEXT PRIMARY KEY,
+         lines TEXT PRIMARY KEY,
          spell_name TEXT NOT NULL,
-         mana_cost INTEGER NOT NULL,
+         mana_cost INTEGER NOT NULL
       );
    """)
    con.commit()
@@ -31,8 +44,8 @@ def create():
    return jsonify({"status": "table created"}), 201
 
 @app.post("/api/insert")
-def insert(spell):
-   #spell = ('1', 'Fireball', 10, 'Offensive')
+def insert():
+   #spell = ('1-2-4-5', 'Fireball', 100)
    data = request.get_json()
    spell = (
       data['spell_id'],

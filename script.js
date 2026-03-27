@@ -1,58 +1,60 @@
-//Finds the node which is closest to mouse click
-function nearestNode(sel_x, sel_y) {
-    for (let node_ind = 0; node_ind < 9; node_ind++) { //runs for each node
-        let pos = nodePos(node_ind);
-        let dist = Math.sqrt((sel_x - pos.x) ** 2 + (sel_y - pos.y) ** 2);
-        if (dist < 40)  // half of an 80px node diameter
+//Finds the node which is closest to mouse click when on the canvas
+function nearestNode(sel_x, sel_y) { 
+    for (let node_ind = 0; node_ind < 9; node_ind++) { //runs for each node index 
+        let pos = nodePos(node_ind); // pos is equal to the node position gotten from the nodePos function
+        let dist = Math.sqrt((sel_x - pos.x) ** 2 + (sel_y - pos.y) ** 2); //Calculates euclidean distance
+        if (dist < 40)  // half of an 80px node to node distance
             return node_ind;
     }
-    return -1;
+    return -1; // value for no node found
 }
 
 //Used to create help nodes
 function usedNodes() {
-    let used = {};
-    for (let l = 0; l < lines.length; l++) {
-        for (let n = 0; n < lines[l].length; n++) {
-            used[lines[l][n]] = l;  // sets the value of used for a certain node index to a specific line
+    let used = {}; // creates a list of used nodes
+    for (let l = 0; l < lines.length; l++) { // runs a loop for each line
+        for (let n = 0; n < lines[l].length; n++) { // and an inner loop for each point in each individual line.
+            used[lines[l][n]] = l;  // used now maps, the input = ___ , and output = which line it belongs to
         }
     }
     return used;
 }
 
-//Finds the node position itself
+//Finds and defines the node position itself
 function nodePos(node_ind) {
     let col = node_ind % 3; // Sets column
     let row = Math.floor(node_ind / 3); // Sets row
     return {
-        x: 65 + col * 130, // padding and spacing between
+        x: 65 + col * 130, // padding(65) and spacing between(130)
         y: 65 + row * 130 
     };
 }
 
 //Clears the current selection
 function clearAll() {
-    lines = [];
-    currentLine = [];
-    dragging = false;
-    hoveredNode = -1;
-    table.redraw();
+    lines = []; // empties lines
+    currentLine = []; // empties current lines
+    dragging = false; //ends dragging
+    hoveredNode = -1; // stops hovering
+    table.redraw(); // resets the drawing as well
 }
 
 //Draw the lines with arrows to denote direction
 function drawArrow(p, posA, posB) {
-    let angle = Math.atan2(posB.y - posA.y, posB.x - posA.x);
+    let angle = Math.atan2(posB.y - posA.y, posB.x - posA.x); // calculates angle between x-axis and the x and y displacement between the two points selected.
     let midX = (posA.x + posB.x) / 2;
     let midY = (posA.y + posB.y) / 2;
-    let size = 8;
+    let size = 8; // determines size of the arrow and triangle/arrow
 
-    p.push();
-    p.translate(midX, midY);
-    p.rotate(angle);
-    p.fill('#88733d');
+    p.push(); // Saves the state and rotation of the arrow
+
+    p.translate(midX, midY); // Move to the middle point
+    p.rotate(angle); // Rotates based on earlier calculated angle to position arrow
+    p.fill('#88733d'); 
     p.noStroke();
-    p.triangle(size, 0, -size, -size * 0.6, -size, size * 0.6);
-    p.pop();
+    p.triangle(size, 0, -size, -size * 0.6, -size, size * 0.6); // Create the arrow triangle
+
+    p.pop(); // Restores to previous version
 }
 
 //Init variables
@@ -65,7 +67,6 @@ let hoveredNode = -1;
 const lineColors = ['rgb(2, 194, 140)', '#c084fc', '#f97316'];
 
 let table = new p5(function(p) { // Use p to access p5 functions directly
-   
     // A setup function that runs ones
     p.setup = function() {
         p.createCanvas(390, 390); // Defines size
@@ -89,12 +90,14 @@ let table = new p5(function(p) { // Use p to access p5 functions directly
             }
         }
 
-        for (let i = 0; i < currentLine.length - 1; i++) {
+        for (let i = 0; i < currentLine.length - 1; i++) { //Stops 1 early
             let posA = nodePos(currentLine[i]);
             let posB = nodePos(currentLine[i + 1]);
+
             p.stroke('#88733d');
             p.strokeWeight(3);
-            p.line(posA.x, posA.y, posB.x, posB.y);
+            p.line(posA.x, posA.y, posB.x, posB.y); // Draws the line from one node to the next
+
             drawArrow(p, posA, posB);
         }
 
@@ -129,10 +132,12 @@ let table = new p5(function(p) { // Use p to access p5 functions directly
     };
 
     p.mousePressed = function() {
-        if (lines.length >= 3) // Can only draw three lines before it stops you
+        if (lines.length >= 3){ // If three lines are selected, pressing is disabled
             return;
+        }
 
         let n = nearestNode(p.mouseX, p.mouseY);
+
         if (n !== -1 && usedNodes()[n] === undefined) {
             dragging = true;
             currentLine = [n];
@@ -140,18 +145,23 @@ let table = new p5(function(p) { // Use p to access p5 functions directly
         }
     };
 
-
     p.mouseDragged = function() {
+        if (lines.length >= 3) { // dragging is disabled if three lines are already selected
+            return;
+        }
         let n = nearestNode(p.mouseX, p.mouseY);
+
         if (n !== -1 && !currentLine.includes(n) && usedNodes()[n] === undefined) {
+            dragging = true; // Needed so you don't have to click at a specific node to begin drawing
             currentLine.push(n);
         }
+
         p.redraw();
     };
 
     p.mouseReleased = function() {
         if (dragging && currentLine.length > 0) {
-            lines.push([...currentLine]); // save a copy of the current line
+            lines.push([...currentLine]); // save a copy of the current line, ... breaks the line down into its components so the list added is a list of lists 
         }
         dragging = false; 
         currentLine = []; // empty the line
