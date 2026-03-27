@@ -1,3 +1,36 @@
+// Function meant to record new spells
+// This will probably be removed later on
+function submitSpell(){
+    if(lines.length >= 2){
+        let payload = {
+            // grab values from text boxes and lines variable
+            spell_name: document.getElementById('name-input').value, // Although, this might have to change 
+            mana_cost: document.getElementById('mana-input').value, // And this could be done through calculation?
+            lines: lines
+        };
+        fetch('/api/insert', { //connects to flask api
+            method: 'POST', 
+            headers: { 'Content-Type': 'application/json' }, //json formatting
+            body: JSON.stringify(payload)
+        })
+        .then(res => res.json()) // output sent back, converts to js object from original json 
+        .then(data => console.log(data)); // This is how the javascript reacts to the output returned
+    }
+}
+
+function retrieveSpell(){
+    if(lines.length >= 2){
+        fetch(`/api/retrieve?${JSON.stringify(lines)}`)
+        .then(res => res.json())
+        .then(data => {
+            document.getElementById('name-input').value = data.spell_name;
+            document.getElementById('mod-input').value = ;
+            document.getElementById('mana-input').value = data.mana_cost;
+            //table.redraw();
+        });
+    }
+}
+
 //Finds the node which is closest to mouse click when on the canvas
 function nearestNode(sel_x, sel_y) { 
     for (let node_ind = 0; node_ind < 9; node_ind++) { //runs for each node index 
@@ -76,22 +109,22 @@ let table = new p5(function(p) { // Use p to access p5 functions directly
     //Redefine drawing
     p.draw = function() {
         // draw background
-        p.background('#efdcc1');
+        p.background('#efdcc1'); // Color of the background of the board
     
         // Actual line drawing
-        for (let l = 0; l < lines.length; l++) {
-            for (let i = 0; i < lines[l].length - 1; i++) {
-                let posA = nodePos(lines[l][i]);
+        for (let l = 0; l < lines.length; l++) { // Draws each line(in lines so the past ones, not the current)
+            for (let i = 0; i < lines[l].length - 1; i++) { // and the connection between each node in these lines
+                let posA = nodePos(lines[l][i]); // Grabs positions
                 let posB = nodePos(lines[l][i + 1]);
-                p.stroke('#88733d');
-                p.strokeWeight(3);
-                p.line(posA.x, posA.y, posB.x, posB.y);
-                drawArrow(p, posA, posB);
+                p.stroke('#88733d'); //line color
+                p.strokeWeight(3); //line width
+                p.line(posA.x, posA.y, posB.x, posB.y); //start and end point of the line drawing
+                drawArrow(p, posA, posB); //draws the arrow.
             }
         }
 
         for (let i = 0; i < currentLine.length - 1; i++) { //Stops 1 early
-            let posA = nodePos(currentLine[i]);
+            let posA = nodePos(currentLine[i]); //Grabs position
             let posB = nodePos(currentLine[i + 1]);
 
             p.stroke('#88733d');
@@ -118,7 +151,7 @@ let table = new p5(function(p) { // Use p to access p5 functions directly
             }
 
             p.noStroke();
-            p.ellipse(pos.x, pos.y, 80, 80);
+            p.ellipse(pos.x, pos.y, 80, 80); // Draw the circle over the node with the correct color to denote its state
         }
     };
 
@@ -138,7 +171,7 @@ let table = new p5(function(p) { // Use p to access p5 functions directly
 
         let n = nearestNode(p.mouseX, p.mouseY);
 
-        if (n !== -1 && usedNodes()[n] === undefined) {
+        if (n !== -1 && usedNodes()[n] === undefined) { //if near a node and it is unused
             dragging = true;
             currentLine = [n];
             p.redraw();
@@ -151,7 +184,7 @@ let table = new p5(function(p) { // Use p to access p5 functions directly
         }
         let n = nearestNode(p.mouseX, p.mouseY);
 
-        if (n !== -1 && !currentLine.includes(n) && usedNodes()[n] === undefined) {
+        if (n !== -1 && !currentLine.includes(n) && usedNodes()[n] === undefined) {//if near a node and it is not in the current line and it is unused
             dragging = true; // Needed so you don't have to click at a specific node to begin drawing
             currentLine.push(n);
         }
@@ -160,7 +193,7 @@ let table = new p5(function(p) { // Use p to access p5 functions directly
     };
 
     p.mouseReleased = function() {
-        if (dragging && currentLine.length > 0) {
+        if (dragging && currentLine.length > 0) { //If you are currently dragging and have selected a node before letting go
             lines.push([...currentLine]); // save a copy of the current line, ... breaks the line down into its components so the list added is a list of lists 
         }
         dragging = false; 
