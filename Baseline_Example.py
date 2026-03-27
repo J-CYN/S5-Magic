@@ -12,7 +12,7 @@ def three_database_selector():
 
 #def nine_database_selector():
    #depending on what is put in first, change output
-#   _
+#   _ 
 
 # Load in and create the elemental_table
 conElem=sqlite3.connect("elements.db")
