@@ -4,13 +4,13 @@ function submitSpell(){
         let payload = {
             // grab values from text boxes and lines variable
             element_lines: lines[0],
-            spell_lines: lines[1],
-            modifier_lines: lines.length >= 3 ? lines[2] : null, // lines[2] if length is greater than 3
             element_name: document.getElementById('element-input').value,
+            spell_lines: lines[1],
+            spell_name: document.getElementById('spell-name-input').value,
+            spell_mana_cost: document.getElementById('mana-spell-input').value,
+            modifier_lines: lines.length >= 3 ? lines[2] : null, // lines[2] if length is greater than 3
             modifier_name: document.getElementById('modifier-name-input').value,
-            modifier_mana_cost: document.getElementById('mana-modifier-input').value,
-            spell_name: document.getElementById('name-input').value,
-            spell_mana_cost: document.getElementById('mana-spell-input').value
+            modifier_mana_cost: document.getElementById('mana-modifier-input').value
         };
         fetch('/api/insert', { //connects to flask api
             method: 'POST', 
@@ -19,6 +19,7 @@ function submitSpell(){
         })
         .then(res => res.json()) // output sent back, converts to js object from original json 
         .then(data => console.log(data)); // This is how the javascript reacts to the output returned
+        clearPartial() // Clear the input columns just to keep it clear and not force the user to clear every time manually
     }
 }
 
@@ -28,8 +29,8 @@ function retrieveSpell(){
         fetch(`/api/retrieve?lines=${JSON.stringify(lines)}`)
         .then(res => res.json())
         .then(data => {
-            document.getElementById('name-input').value = data.spell_name;
-            document.getElementById('mod-input').value = data.modifier_name;
+            document.getElementById('spell-name-input').value = data.spell_name;
+            document.getElementById('modifier-name-input').value = data.modifier_name;
             document.getElementById('manaCostTotal').textContent = data.mana_cost; //CHANGE THIS
             document.getElementById('fullSpellName').textContent = data.full_spell_name;
         });
@@ -37,7 +38,7 @@ function retrieveSpell(){
         fetch(`/api/retrieve?lines=${JSON.stringify(lines)}`)
         .then(res => res.json())
         .then(data => {
-            document.getElementById('name-input').value = data.spell_name;
+            document.getElementById('spell-name-input').value = data.spell_name;
             document.getElementById('manaCostTotal').textContent = data.mana_cost; // CHANGE THIS
             document.getElementById('fullSpellName').textContent = data.full_spell_name;
         });
@@ -46,7 +47,7 @@ function retrieveSpell(){
 
 //Finds total amount of nodes selected
 function nexusCost(){
-    return usedNodes().length // Total amount of nodes selected
+    return Object.keys(usedNodes()).length // Total amount of nodes selected
 }
 
 //Finds the node which is closest to mouse click when on the canvas
@@ -81,12 +82,27 @@ function nodePos(node_ind) {
     };
 }
 
+//Clears after submitting the text boxes after submitting spell
+function clearPartial(){
+    document.getElementById('element-input').value = "";
+    document.getElementById('mana-spell-input').value = "";
+    document.getElementById('modifier-name-input').value = "";
+    document.getElementById('mana-modifier-input').value = "";
+  
+    dragging = false;
+    hoveredNode = -1;
+    table.redraw();
+}
+
 //Clears the current selection
 function clearAll() {
     // Clear text
-    document.getElementById('name-input').value = "";
-    document.getElementById('mod-input').value = "";
-    document.getElementById('mana-input').value = "";
+    document.getElementById('spell-name-input').value = "";
+    document.getElementById('mana-spell-input').value = "";
+    document.getElementById('mana-modifier-input').value = "";
+    document.getElementById('manaCostTotal').textContent = "Mana Cost";
+    document.getElementById('element-input').value = "";
+    document.getElementById('modifier-name-input').value = "";
     document.getElementById('fullSpellName').textContent = "???";
     lines = []; // empties lines
     currentLine = []; // empties current lines

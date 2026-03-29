@@ -5,13 +5,13 @@ import sqlite3
 def database_selector(size):
    #depending on what is put in first, change output
    if size == 3:
-      return "ThreeElement.db", "ThreeSpells.db", "ThreeSpells.db"
+      return "ThreeElement.db", "ThreeSpells.db", "ThreeModifier.db"
    elif size == 5:
-      return "FiveElement.db", "FiveSpells.db", "FiveSpells.db"
+      return "FiveElement.db", "FiveSpells.db", "FiveModifier.db"
    elif size == 7:
-      return "SevenElement.db", "SevenSpells.db", "SevenSpells.db"
+      return "SevenElement.db", "SevenSpells.db", "SevenModifier.db"
    elif size == 9:
-      return "NineElement.db", "NineSpells.db", "NineSpells.db"
+      return "NineElement.db", "NineSpells.db", "NineModifier.db"
    else:
       raise ValueError(f"Invalid table size: {size}")
    
@@ -53,8 +53,6 @@ def create():
    """)
    con.commit()
    con.close()
-
-   return jsonify({"status": "table created"}), 201
 
 ElementalPath, SpellsPath, ModifierPath = database_selector(3)
 
@@ -133,7 +131,7 @@ def retrieve():
    
 @app.post("/api/insert")
 def insert():
-   #spell = ('1-2-4-5', 'Fireball', 100)
+   #grabs the data
    data = request.get_json()
    
    # Select the right element
@@ -141,7 +139,7 @@ def insert():
    conElem.execute("PRAGMA journal_mode=WAL;")
    curElem = conElem.cursor()
    curElem.execute(
-      "INSERT INTO ElementalTable (lines, element_name) VALUES (?, ?)",
+      "INSERT OR IGNORE INTO ElementalTable (lines, element_name) VALUES (?, ?)",
       (json.dumps(data['element_lines']), data['element_name'])
    )
 
@@ -150,7 +148,7 @@ def insert():
    conSpell.execute("PRAGMA journal_mode=WAL;")
    curSpell = conSpell.cursor()
    curSpell.execute(
-      "INSERT INTO SpellTable (lines, spell_name, mana_cost) VALUES (?, ?, ?)",
+      "INSERT OR IGNORE INTO SpellTable (lines, spell_name, mana_cost) VALUES (?, ?, ?)",
       (json.dumps(data['spell_lines']), data['spell_name'], data['spell_mana_cost'])
    )
 
@@ -164,7 +162,7 @@ def insert():
       conMod.execute("PRAGMA journal_mode=WAL;")
       curMod = conMod.cursor()
       curMod.execute(
-         "INSERT INTO ModifierTable (lines, modifier_name, mana_cost) VALUES (?, ?, ?)",
+         "INSERT OR IGNORE INTO ModifierTable (lines, modifier_name, mana_cost) VALUES (?, ?, ?)",
          (json.dumps(data['modifier_lines']), data['modifier_name'], data['modifier_mana_cost'])
       )
       conMod.commit()
