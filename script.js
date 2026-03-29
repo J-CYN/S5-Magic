@@ -1,12 +1,16 @@
-// Function meant to record new spells
-// This will probably be removed later on
+// Function meant to record new spells and modifiers
 function submitSpell(){
     if(lines.length >= 2){
         let payload = {
             // grab values from text boxes and lines variable
-            spell_name: document.getElementById('name-input').value, // Although, this might have to change 
-            mana_cost: document.getElementById('mana-input').value, // And this could be done through calculation?
-            lines: lines
+            element_lines: lines[0],
+            spell_lines: lines[1],
+            modifier_lines: lines.length >= 3 ? lines[2] : null, // lines[2] if length is greater than 3
+            element_name: document.getElementById('element-input').value,
+            modifier_name: document.getElementById('modifier-name-input').value,
+            modifier_mana_cost: document.getElementById('mana-modifier-input').value,
+            spell_name: document.getElementById('name-input').value,
+            spell_mana_cost: document.getElementById('mana-spell-input').value
         };
         fetch('/api/insert', { //connects to flask api
             method: 'POST', 
@@ -18,17 +22,31 @@ function submitSpell(){
     }
 }
 
+// Retrieves the spell and updates the surrounding texts
 function retrieveSpell(){
-    if(lines.length >= 2){
-        fetch(`/api/retrieve?${JSON.stringify(lines)}`)
+    if(lines.length >= 3){
+        fetch(`/api/retrieve?lines=${JSON.stringify(lines)}`)
         .then(res => res.json())
         .then(data => {
             document.getElementById('name-input').value = data.spell_name;
-            document.getElementById('mod-input').value = ;
-            document.getElementById('mana-input').value = data.mana_cost;
-            //table.redraw();
+            document.getElementById('mod-input').value = data.modifier_name;
+            document.getElementById('manaCostTotal').textContent = data.mana_cost; //CHANGE THIS
+            document.getElementById('fullSpellName').textContent = data.full_spell_name;
+        });
+    }else if(lines.length >= 2){
+        fetch(`/api/retrieve?lines=${JSON.stringify(lines)}`)
+        .then(res => res.json())
+        .then(data => {
+            document.getElementById('name-input').value = data.spell_name;
+            document.getElementById('manaCostTotal').textContent = data.mana_cost; // CHANGE THIS
+            document.getElementById('fullSpellName').textContent = data.full_spell_name;
         });
     }
+}
+
+//Finds total amount of nodes selected
+function nexusCost(){
+    return usedNodes().length // Total amount of nodes selected
 }
 
 //Finds the node which is closest to mouse click when on the canvas
@@ -65,6 +83,11 @@ function nodePos(node_ind) {
 
 //Clears the current selection
 function clearAll() {
+    // Clear text
+    document.getElementById('name-input').value = "";
+    document.getElementById('mod-input').value = "";
+    document.getElementById('mana-input').value = "";
+    document.getElementById('fullSpellName').textContent = "???";
     lines = []; // empties lines
     currentLine = []; // empties current lines
     dragging = false; //ends dragging

@@ -10,7 +10,8 @@
     <header>
         <h1>Laurefell Magic</h1>
     </header>
-        <p>A Very Cool Description</p>
+        <p class="spellInfo" id="fullSpellName">A Very Cool Description</p>
+        <p class="spellInfo" id="manaCostTotal">Mana Cost</p>
         <div class="buttons_and_form">
             <div class="canvas-section">
                 <div id="node-canvas"></div>
@@ -29,8 +30,20 @@
                         <input type="text" id="mod-input" name="modifier">
                     </div>
                     <div class="form-group">
-                        <label for="mana-input">Mana Cost:</label>
-                        <input type="text" id="mana-input" name="mana_cost">
+                        <label for="mana-spell-input">Spell Mana Cost:</label>
+                        <input type="text" id="mana-spell-input" name="mana_spell_cost">
+                    </div>
+                    <div class="form-group">
+                        <label for="mana-modifier-input">Modifier Mana Cost:</label>
+                        <input type="text" id="mana-modifier-input" name="mana_modifier_cost">
+                    </div>
+                    <div class="form-group">
+                        <label for="modifier-name-input">Modifier Name:</label>
+                        <input type="text" id="modifier-name-input" name="modifier_name">
+                    </div>
+                    <div class="form-group">
+                        <label for="element-input">Element Name:</label>
+                        <input type="text" id="element-input" name="element_name">
                     </div>
                 </form>
             </div>

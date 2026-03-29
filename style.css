@@ -29,6 +29,11 @@ p{
     color: rgb(2, 194, 140);
 }
 
+.spellInfo{
+    font-size: 50px;
+    font-family: "Tangerine";
+}
+
 .buttons_and_form{/*review this*/
     display: flex;
     justify-content: center;
