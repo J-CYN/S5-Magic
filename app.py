@@ -126,7 +126,7 @@ def retrieve():
          "modifier_name": "",
          "spell_name":f"{spell[1]}",
          "full_spell_name": f"{element[1]} {spell[1]}", #addition of three strings,
-         "mana_cost": spell[2] #addition of both mana costs
+         "mana_cost": spell[2] # just spell cost since no modifier
       }), 200
    
 @app.post("/api/insert")

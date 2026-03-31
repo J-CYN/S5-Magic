@@ -31,7 +31,11 @@ function retrieveSpell(){
         .then(data => {
             document.getElementById('spell-name-input').value = data.spell_name;
             document.getElementById('modifier-name-input').value = data.modifier_name;
-            document.getElementById('manaCostTotal').textContent = data.mana_cost;
+            if (data.mana_cost >= 50){ // Mana cost can't be below 50
+                document.getElementById('manaCostTotal').textContent = data.mana_cost;
+            }else {
+                document.getElementById('manaCostTotal').textContent = 50; 
+            }
             document.getElementById('fullSpellName').textContent = data.full_spell_name;
             document.getElementById('nexusCostTotal').textContent = nexusCost();
         });
