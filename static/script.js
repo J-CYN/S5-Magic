@@ -31,15 +31,16 @@ function retrieveSpell(){
         .then(data => {
             document.getElementById('spell-name-input').value = data.spell_name;
             document.getElementById('modifier-name-input').value = data.modifier_name;
-            document.getElementById('manaCostTotal').textContent = data.mana_cost; //CHANGE THIS
+            document.getElementById('manaCostTotal').textContent = data.mana_cost;
             document.getElementById('fullSpellName').textContent = data.full_spell_name;
+            document.getElementById('nexusCostTotal').textContent = nexusCost();
         });
     }else if(lines.length >= 2){
         fetch(`/api/retrieve?lines=${JSON.stringify(lines)}`)
         .then(res => res.json())
         .then(data => {
             document.getElementById('spell-name-input').value = data.spell_name;
-            document.getElementById('manaCostTotal').textContent = data.mana_cost; // CHANGE THIS
+            document.getElementById('manaCostTotal').textContent = data.mana_cost; 
             document.getElementById('fullSpellName').textContent = data.full_spell_name;
         });
     }
@@ -85,6 +86,7 @@ function nodePos(node_ind) {
 //Clears after submitting the text boxes after submitting spell
 function clearPartial(){
     document.getElementById('element-input').value = "";
+    document.getElementById('spell-name-input').value = "";
     document.getElementById('mana-spell-input').value = "";
     document.getElementById('modifier-name-input').value = "";
     document.getElementById('mana-modifier-input').value = "";
