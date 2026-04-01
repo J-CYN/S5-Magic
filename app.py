@@ -1,17 +1,36 @@
 from flask import Flask, request, jsonify, render_template
 import json
+import os
 import sqlite3 
+
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 
 def database_selector(size):
    #depending on what is put in first, change output
    if size == 3:
-      return "ThreeElement.db", "ThreeSpells.db", "ThreeModifier.db"
+      return (
+         os.path.join(BASE_DIR, "ThreeElement.db"),
+         os.path.join(BASE_DIR, "ThreeSpells.db"),
+         os.path.join(BASE_DIR, "ThreeModifier.db")
+      )
    elif size == 5:
-      return "FiveElement.db", "FiveSpells.db", "FiveModifier.db"
+      return (
+         os.path.join(BASE_DIR, "FiveElement.db"),
+         os.path.join(BASE_DIR, "FiveSpells.db"),
+         os.path.join(BASE_DIR, "FiveModifier.db")
+      )
    elif size == 7:
-      return "SevenElement.db", "SevenSpells.db", "SevenModifier.db"
+      return (
+         os.path.join(BASE_DIR, "SevenElement.db"),
+         os.path.join(BASE_DIR, "SevenSpells.db"),
+         os.path.join(BASE_DIR, "SevenModifier.db")
+   )
    elif size == 9:
-      return "NineElement.db", "NineSpells.db", "NineModifier.db"
+      return (
+         os.path.join(BASE_DIR, "NineElement.db"),
+         os.path.join(BASE_DIR, "NineSpells.db"),
+         os.path.join(BASE_DIR, "NineModifier.db")
+   )
    else:
       raise ValueError(f"Invalid table size: {size}")
    
