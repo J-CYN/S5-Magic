@@ -29,13 +29,18 @@ function retrieveSpell(){
         fetch(`/api/retrieve?lines=${JSON.stringify(lines)}`)
         .then(res => res.json())
         .then(data => {
+            document.getElementById('element-input').value = data.element_name;
             document.getElementById('spell-name-input').value = data.spell_name;
             document.getElementById('modifier-name-input').value = data.modifier_name;
+
             if (data.mana_cost >= 50){ // Mana cost can't be below 50
                 document.getElementById('manaCostTotal').textContent = data.mana_cost;
             }else {
                 document.getElementById('manaCostTotal').textContent = 50; 
             }
+            document.getElementById('mana-spell-input').value = data.spell_mana_cost;
+            document.getElementById('mana-modifier-input').value = data.modifier_mana_cost;
+
             document.getElementById('fullSpellName').textContent = data.full_spell_name;
             document.getElementById('nexusCostTotal').textContent = nexusCost();
         });
@@ -43,9 +48,14 @@ function retrieveSpell(){
         fetch(`/api/retrieve?lines=${JSON.stringify(lines)}`)
         .then(res => res.json())
         .then(data => {
+            document.getElementById('element-input').value = data.element_name;
             document.getElementById('spell-name-input').value = data.spell_name;
+
+            document.getElementById('mana-spell-input').value = data.spell_mana_cost;
+
             document.getElementById('manaCostTotal').textContent = data.mana_cost; 
             document.getElementById('fullSpellName').textContent = data.full_spell_name;
+            document.getElementById('nexusCostTotal').textContent = nexusCost();
         });
     }
 }

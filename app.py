@@ -133,6 +133,9 @@ def retrieve():
       # Send back the total information
       return jsonify({
          "lines": json.dumps(linesList), #return the lines
+         "element_name": f"{element[1]}",
+         "spell_mana_cost": f"{spell[2]}",
+         "modifier_mana_cost": f"{modifier[2]}",
          "modifier_name": f"{modifier[1]}",
          "spell_name": f"{spell[1]}",
          "full_spell_name": f"{element[1]} {spell[1]} {modifier[1]}", #addition of three strings,
@@ -142,7 +145,10 @@ def retrieve():
       # Send back the partial information
       return jsonify({
          "lines": json.dumps(linesList), #return the lines
+         "element_name": f"{element[1]}",
+         "spell_mana_cost": f"{spell[2]}",
          "modifier_name": "",
+         "modifier_mana_cost": "",
          "spell_name":f"{spell[1]}",
          "full_spell_name": f"{element[1]} {spell[1]}", #addition of three strings,
          "mana_cost": spell[2] # just spell cost since no modifier
