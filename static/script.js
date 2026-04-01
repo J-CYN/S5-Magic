@@ -110,6 +110,7 @@ function clearAll() {
     document.getElementById('element-input').value = "";
     document.getElementById('modifier-name-input').value = "";
     document.getElementById('fullSpellName').textContent = "???";
+    document.getElementById('nexusCostTotal').textContent = "Nexus Cost";
     lines = []; // empties lines
     currentLine = []; // empties current lines
     dragging = false; //ends dragging
@@ -185,6 +186,10 @@ let table = new p5(function(p) { // Use p to access p5 functions directly
 
             // draw lines
             let used = usedNodes();
+            
+            //p.drawingContext.shadowBlur = 40; These lines represent a possible future shading attempt to add a little glow to each button
+            //p.drawingContext.shadowColor = "rgba(30, 205, 173, 0.8)";
+
             if (currentLine.includes(node_ind) && lines.length < lineColors.length) { // This statement prevents color changes after the three lines are placed
                 p.fill(lineColors[lines.length]);      // if currently selected
             } else if (used[node_ind] !== undefined) {
