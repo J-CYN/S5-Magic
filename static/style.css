@@ -32,6 +32,8 @@ p{
 .spellInfo{
     font-size: 50px;
     font-family: "Lucida Console";
+    margin-top: 0.5em;
+    margin-bottom: 0.1em;
 }
 
 .buttons_and_form{/*review this*/
