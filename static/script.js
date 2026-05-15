@@ -29,33 +29,46 @@ function retrieveSpell(){
         fetch(`/api/retrieve?lines=${JSON.stringify(lines)}`)
         .then(res => res.json())
         .then(data => {
-            document.getElementById('element-input').value = data.element_name;
-            document.getElementById('spell-name-input').value = data.spell_name;
-            document.getElementById('modifier-name-input').value = data.modifier_name;
+            if (data.status === "not found" || data.status === "modifier not found") { //Invalid input handling
+                console.log(data)
+                document.getElementById('fullSpellName').textContent = "Invalid Spell";
+                document.getElementById('manaCostTotal').textContent = "Invalid Spell Mana Cost";
+                document.getElementById('nexusCostTotal').textContent = "Invalid Nexus Cost";
+            }else{
+                document.getElementById('element-input').value = data.element_name;
+                document.getElementById('spell-name-input').value = data.spell_name;
+                document.getElementById('modifier-name-input').value = data.modifier_name;
 
-            if (data.mana_cost >= 50){ // Mana cost can't be below 50
-                document.getElementById('manaCostTotal').textContent = data.mana_cost;
-            }else {
-                document.getElementById('manaCostTotal').textContent = 50; 
+                if (data.mana_cost >= 50){ // Mana cost can't be below 50
+                    document.getElementById('manaCostTotal').textContent = data.mana_cost;
+                }else {
+                    document.getElementById('manaCostTotal').textContent = 50; 
+                }
+                document.getElementById('mana-spell-input').value = data.spell_mana_cost;
+                document.getElementById('mana-modifier-input').value = data.modifier_mana_cost;
+
+                document.getElementById('fullSpellName').textContent = data.full_spell_name;
+                document.getElementById('nexusCostTotal').textContent = nexusCost();
             }
-            document.getElementById('mana-spell-input').value = data.spell_mana_cost;
-            document.getElementById('mana-modifier-input').value = data.modifier_mana_cost;
-
-            document.getElementById('fullSpellName').textContent = data.full_spell_name;
-            document.getElementById('nexusCostTotal').textContent = nexusCost();
         });
     }else if(lines.length >= 2){
-        fetch(`/api/retrieve?lines=${JSON.stringify(lines)}`)
+        fetch(`/api/retrieve?lines=${JSON.stringify(lines)}`) // HANDLE INVALID TOO // TODO
         .then(res => res.json())
         .then(data => {
-            document.getElementById('element-input').value = data.element_name;
-            document.getElementById('spell-name-input').value = data.spell_name;
+            if (data.status === "not found") { //Invalid input handling but for no modifier
+                document.getElementById('fullSpellName').textContent = "Invalid Spell";
+                document.getElementById('manaCostTotal').textContent = "Invalid Spell Mana Cost";
+                document.getElementById('nexusCostTotal').textContent = "Invalid Nexus Cost";
+            }else{
+                document.getElementById('element-input').value = data.element_name;
+                document.getElementById('spell-name-input').value = data.spell_name;
 
-            document.getElementById('mana-spell-input').value = data.spell_mana_cost;
+                document.getElementById('mana-spell-input').value = data.spell_mana_cost;
 
-            document.getElementById('manaCostTotal').textContent = data.mana_cost; 
-            document.getElementById('fullSpellName').textContent = data.full_spell_name;
-            document.getElementById('nexusCostTotal').textContent = nexusCost();
+                document.getElementById('manaCostTotal').textContent = data.mana_cost; 
+                document.getElementById('fullSpellName').textContent = data.full_spell_name;
+                document.getElementById('nexusCostTotal').textContent = nexusCost();
+            }
         });
     }
 }
