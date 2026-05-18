@@ -4,17 +4,21 @@
         <link href="{{ url_for('static', filename='login_style.css') }}" rel="stylesheet">
     </head>
     <body>
-        <h1 id="login-header">Login</h1>
+    <header>
+        <h1>Login</h1>
+    </header>
         <div class="login-group">
-            <label for="element-input">Username:</label>
-            <input type="text" id="username-input" name="user">
-        </div>
-        <div class="login-group">
-            <label for="spell-name-input">Password:</label>
+            <label for="userlabel">Username:</label>
+            <input type="text" id="username-input" name="user">     
+
+            <label for="passlabel">Password:</label>
             <input type="text" id="password-input" name="pass">
+
+            <div class="button-group">
+                <button onclick="login()">Login</button>
+                <button onclick="register()">Register</button>
+            </div>
         </div>
-        <button onclick="login()">Login</button>
-        <button onclick="register()">Register</button>
     <script src="{{ url_for('static', filename='login.js') }}"></script>
     </body>
 </html>
