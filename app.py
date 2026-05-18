@@ -87,8 +87,7 @@ def create():
       cur.execute("""
          CREATE TABLE IF NOT EXISTS LoginTable(
             user TEXT PRIMARY KEY,
-            pass TEXT NOT NULL,
-            accountID TEXT NOT NULL
+            pass TEXT NOT NULL
          );
       """)
       con.commit()
@@ -128,7 +127,7 @@ def login():
    if account is None or not bcrypt.checkpw(password.encode(), account[1].encode()):
       return jsonify({"status": "not found"}), 404
 
-   AccountPath = os.path.join(BASE_DIR, str(account[2]) + ".db")
+   AccountPath = os.path.join(BASE_DIR, str(account[0]) + ".db")
 
    try:
       con = sqlite3.connect(AccountPath)

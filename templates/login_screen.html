@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
     <head>
+        <link href="{{ url_for('static', filename='login_style.css') }}" rel="stylesheet">
     </head>
     <body>
         <h1 id="login-header">Login</h1>
@@ -13,6 +14,7 @@
             <input type="text" id="password-input" name="pass">
         </div>
         <button onclick="login()">Login</button>
+        <button onclick="register()">Register</button>
     <script src="{{ url_for('static', filename='login.js') }}"></script>
     </body>
 </html>

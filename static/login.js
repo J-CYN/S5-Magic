@@ -27,6 +27,8 @@ function register(){
     .then(res => res.json())
     .then(data => {
         if (data.status === "created"){
+            document.getElementById('username-input').value = ""
+            document.getElementById('password-input').value = ""
             window.location.href = "/table";
         } else {
             // print or show error message later
