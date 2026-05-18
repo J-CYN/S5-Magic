@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+    <head>
+    </head>
+    <body>
+        <h1 id="login-header">Login</h1>
+        <div class="login-group">
+            <label for="element-input">Username:</label>
+            <input type="text" id="username-input" name="user">
+        </div>
+        <div class="login-group">
+            <label for="spell-name-input">Password:</label>
+            <input type="text" id="password-input" name="pass">
+        </div>
+        <button onclick="login()">Login</button>
+    <script src="{{ url_for('static', filename='login.js') }}"></script>
+    </body>
+</html>
