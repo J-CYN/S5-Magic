@@ -36,7 +36,28 @@ p{
     margin-bottom: 0.1em;
 }
 
-.buttons_and_form{/*review this*/
+.canvas-and-subbuttons {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.smallerTableButton {
+    margin-left: auto;
+}
+
+.largerTableButton {
+    margin-right: auto;
+}
+
+#tableWithButtons{
+    display: flex;
+    align-items:center; 
+    justify-content: center;
+    flex-direction: row;
+}
+
+.buttons_and_form{
     display: flex;
     justify-content: center;
     align-items: flex-start;

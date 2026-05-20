@@ -52,7 +52,7 @@ function retrieveSpell(){
             }
         });
     }else if(lines.length >= 2){
-        fetch(`/api/retrieve?lines=${JSON.stringify(lines)}`) // HANDLE INVALID TOO // TODO
+        fetch(`/api/retrieve?lines=${JSON.stringify(lines)}`)
         .then(res => res.json())
         .then(data => {
             if (data.status === "not found") { //Invalid input handling but for no modifier
@@ -102,8 +102,8 @@ function usedNodes() {
 
 //Finds and defines the node position itself
 function nodePos(node_ind) {
-    let col = node_ind % 3; // Sets column
-    let row = Math.floor(node_ind / 3); // Sets row
+    let col = node_ind % table_width; // Sets column
+    let row = Math.floor(node_ind / table_width); // Sets row
     return {
         x: 65 + col * 130, // padding(65) and spacing between(130)
         y: 65 + row * 130 
@@ -142,7 +142,7 @@ function clearAll() {
 }
 
 //Draw the lines with arrows to denote direction
-function drawArrow(p, posA, posB) {
+function drawArrow(p, posA, posB, color) {
     let angle = Math.atan2(posB.y - posA.y, posB.x - posA.x); // calculates angle between x-axis and the x and y displacement between the two points selected.
     let midX = (posA.x + posB.x) / 2;
     let midY = (posA.y + posB.y) / 2;
@@ -152,11 +152,31 @@ function drawArrow(p, posA, posB) {
 
     p.translate(midX, midY); // Move to the middle point
     p.rotate(angle); // Rotates based on earlier calculated angle to position arrow
-    p.fill('#88733d'); 
+    p.fill(color); 
     p.noStroke();
     p.triangle(size, 0, -size, -size * 0.6, -size, size * 0.6); // Create the arrow triangle
 
     p.pop(); // Restores to previous version
+}
+
+//Update width functions
+function largerTable(){
+    table_width = table_width + 2
+    //make left button visible
+    document.getElementById("smallerTableButton").display()
+    if (table_width == 9){
+        //Make right button invisible
+        document.getElementById("largerTableButton").display()
+    }
+}
+function smallerTable(){
+    table_width = table_width - 2
+    //make right button visible
+    document.getElementById("largerTableButton").display()
+    if (table_width == 3){
+        //Make left button invisible
+        document.getElementById("smallerTableButton").display()
+    }
 }
 
 //Init variables
@@ -164,14 +184,16 @@ let lines = [];
 let currentLine = [];
 let dragging = false;
 let hoveredNode = -1;
+let table_width = 3
 
 //Color list
-const lineColors = ['rgb(2, 194, 140)', '#c084fc', '#f97316'];
+const nodeColors = ['rgb(2, 194, 140)', '#c084fc', '#f97316'];
+const lineColors = ['rgb(2, 123, 89)', '#7e40bc', 'rgb(164, 73, 8)'];
 
 let table = new p5(function(p) { // Use p to access p5 functions directly
     // A setup function that runs ones
     p.setup = function() {
-        p.createCanvas(390, 390); // Defines size
+        p.createCanvas(390, 390); // Defines size //TODO
         p.noLoop(); // Doesn't redraw
     };
 
@@ -180,31 +202,32 @@ let table = new p5(function(p) { // Use p to access p5 functions directly
         // draw background
         p.background('#efdcc1'); // Color of the background of the board
     
-        // Actual line drawing
+        // Previous line drawing
         for (let l = 0; l < lines.length; l++) { // Draws each line(in lines so the past ones, not the current)
             for (let i = 0; i < lines[l].length - 1; i++) { // and the connection between each node in these lines
                 let posA = nodePos(lines[l][i]); // Grabs positions
                 let posB = nodePos(lines[l][i + 1]);
-                p.stroke('#88733d'); //line color
+                p.stroke(lineColors[l]); //line color
                 p.strokeWeight(3); //line width
                 p.line(posA.x, posA.y, posB.x, posB.y); //start and end point of the line drawing
-                drawArrow(p, posA, posB); //draws the arrow.
+                drawArrow(p, posA, posB, lineColors[l]); //draws the arrow.
             }
         }
 
+        // Current line drawing
         for (let i = 0; i < currentLine.length - 1; i++) { //Stops 1 early
             let posA = nodePos(currentLine[i]); //Grabs position
             let posB = nodePos(currentLine[i + 1]);
 
-            p.stroke('#88733d');
+            p.stroke(lineColors[lines.length]); //sets lineColors depending on which line it is drawing
             p.strokeWeight(3);
             p.line(posA.x, posA.y, posB.x, posB.y); // Draws the line from one node to the next
 
-            drawArrow(p, posA, posB);
+            drawArrow(p, posA, posB, lineColors[lines.length]);
         }
 
         // draw nodes
-        for (let node_ind = 0; node_ind < 9; node_ind++) {
+        for (let node_ind = 0; node_ind < (table_width ** 2); node_ind++) {
             let pos = nodePos(node_ind);
 
             // draw lines
@@ -213,10 +236,10 @@ let table = new p5(function(p) { // Use p to access p5 functions directly
             //p.drawingContext.shadowBlur = 40; These lines represent a possible future shading attempt to add a little glow to each button
             //p.drawingContext.shadowColor = "rgba(30, 205, 173, 0.8)";
 
-            if (currentLine.includes(node_ind) && lines.length < lineColors.length) { // This statement prevents color changes after the three lines are placed
-                p.fill(lineColors[lines.length]);      // if currently selected
+            if (currentLine.includes(node_ind) && lines.length < nodeColors.length) { // This statement prevents color changes after the three lines are placed
+                p.fill(nodeColors[lines.length]);      // if currently selected
             } else if (used[node_ind] !== undefined) {
-                p.fill(lineColors[used[node_ind]]);    // if selected before
+                p.fill(nodeColors[used[node_ind]]);    // if selected before
             } else if (node_ind === hoveredNode) {
                 p.fill('#88733d'); // If hovered
             } else {

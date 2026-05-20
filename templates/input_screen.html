@@ -15,11 +15,17 @@
         <p class="spellInfo" id="nexusCostTotal">Nexus Cost</p>
         <div class="buttons_and_form">
             <div class="canvas-section">
-                <div id="node-canvas"></div>
-                <div class="Button-Table">
-                    <button class="subbutton" onclick="clearAll()">Clear Spell Table</button>
-                    <button class="subbutton" onclick="submitSpell()">Submit Spell</button>
-                    <button class="subbutton" onclick="retrieveSpell()">Retrieve Spell</button>
+                <div id="tableWithButtons">
+                    <button id="smallerTableButton" class="smallerTableButton" onclick="smallerTable()">Smaller Table</button>
+                    <div class="canvasAndSubbuttons">
+                        <div id="node-canvas"></div>
+                        <div class="Button-Table">
+                            <button class="subbutton" onclick="clearAll()">Clear Spell Table</button>
+                            <button class="subbutton" onclick="submitSpell()">Submit Spell</button>
+                            <button class="subbutton" onclick="retrieveSpell()">Retrieve Spell</button>
+                        </div>
+                    </div>
+                    <button id="largerTableButton" class="largerTableButton" onclick="largerTable()">Larger Table</button>
                 </div>
                 <form class="form-total">
                     <div class="form-group">
