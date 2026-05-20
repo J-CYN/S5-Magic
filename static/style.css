@@ -44,10 +44,28 @@ p{
 
 .smallerTableButton {
     margin-left: auto;
+    font-size: 20px;
+    background:rgb(2, 194, 140); 
+    color:rgb(35, 8, 47); 
+    border:1px solid rgba(255, 255, 255, 1);
+    padding:.6rem 1rem; 
+    border-radius:10px; 
+    font-weight:600; 
+    cursor:pointer;
+    margin-top: 2px;
 }
 
 .largerTableButton {
     margin-right: auto;
+    font-size: 20px;
+    background:rgb(2, 194, 140); 
+    color:rgb(35, 8, 47); 
+    border:1px solid rgba(255, 255, 255, 1);
+    padding:.6rem 1rem; 
+    border-radius:10px; 
+    font-weight:600; 
+    cursor:pointer;
+    margin-top: 2px;
 }
 
 #tableWithButtons{

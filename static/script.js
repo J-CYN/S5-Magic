@@ -80,10 +80,11 @@ function nexusCost(){
 
 //Finds the node which is closest to mouse click when on the canvas
 function nearestNode(sel_x, sel_y) { 
-    for (let node_ind = 0; node_ind < 9; node_ind++) { //runs for each node index 
+    for (let node_ind = 0; node_ind < (table_width ** 2); node_ind++) { //runs for each node index 
         let pos = nodePos(node_ind); // pos is equal to the node position gotten from the nodePos function
         let dist = Math.sqrt((sel_x - pos.x) ** 2 + (sel_y - pos.y) ** 2); //Calculates euclidean distance
-        if (dist < 40)  // half of an 80px node to node distance
+        let threshold = (nodeSize / 2);
+        if (dist < threshold)  // half of an 80px node to node distance
             return node_ind;
     }
     return -1; // value for no node found
@@ -102,11 +103,13 @@ function usedNodes() {
 
 //Finds and defines the node position itself
 function nodePos(node_ind) {
+    let canvasSize = Math.min(130 * table_width, 520);
+    let spacing = canvasSize / table_width;
     let col = node_ind % table_width; // Sets column
     let row = Math.floor(node_ind / table_width); // Sets row
     return {
-        x: 65 + col * 130, // padding(65) and spacing between(130)
-        y: 65 + row * 130 
+        x: spacing / 2 + col * spacing, // Padding and spacing
+        y: spacing / 2 + row * spacing
     };
 }
 
@@ -163,19 +166,23 @@ function drawArrow(p, posA, posB, color) {
 function largerTable(){
     table_width = table_width + 2
     //make left button visible
-    document.getElementById("smallerTableButton").display()
+    document.getElementById("smallerTableButton").style.visibility = "visible";
+    clearAll()
+    table.resizeTable();
     if (table_width == 9){
         //Make right button invisible
-        document.getElementById("largerTableButton").display()
+        document.getElementById("largerTableButton").style.visibility = "hidden";
     }
 }
 function smallerTable(){
     table_width = table_width - 2
     //make right button visible
-    document.getElementById("largerTableButton").display()
+    document.getElementById("largerTableButton").style.visibility = "visible";
+    clearAll()
+    table.resizeTable();
     if (table_width == 3){
         //Make left button invisible
-        document.getElementById("smallerTableButton").display()
+        document.getElementById("smallerTableButton").style.visibility = "hidden";
     }
 }
 
@@ -185,6 +192,10 @@ let currentLine = [];
 let dragging = false;
 let hoveredNode = -1;
 let table_width = 3
+let nodeSize = 80 * (3 / table_width);
+
+//Smaller table option should stay hidden at first
+document.getElementById("smallerTableButton").style.visibility = "hidden";
 
 //Color list
 const nodeColors = ['rgb(2, 194, 140)', '#c084fc', '#f97316'];
@@ -193,8 +204,16 @@ const lineColors = ['rgb(2, 123, 89)', '#7e40bc', 'rgb(164, 73, 8)'];
 let table = new p5(function(p) { // Use p to access p5 functions directly
     // A setup function that runs ones
     p.setup = function() {
-        p.createCanvas(390, 390); // Defines size //TODO
+        let canvasSize = Math.min(130 * table_width, 520);
+        p.createCanvas(canvasSize, canvasSize); // Defines size 
         p.noLoop(); // Doesn't redraw
+    };
+
+    p.resizeTable = function() { 
+        let canvasSize = Math.min(130 * table_width, 520);
+        p.resizeCanvas(canvasSize, canvasSize);
+        nodeSize = 80 * (3 / table_width);
+        p.redraw(); // Does redraw
     };
 
     //Redefine drawing
@@ -247,7 +266,8 @@ let table = new p5(function(p) { // Use p to access p5 functions directly
             }
 
             p.noStroke();
-            p.ellipse(pos.x, pos.y, 80, 80); // Draw the circle over the node with the correct color to denote its state
+            let nodeSize = 80 * (3 / table_width);
+            p.ellipse(pos.x, pos.y, nodeSize, nodeSize); // Draw the circle over the node with the correct color to denote its state
         }
     };
 
