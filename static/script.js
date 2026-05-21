@@ -25,6 +25,8 @@ function submitSpell(){
 
 // Retrieves the spell and updates the surrounding texts
 function retrieveSpell(){
+    let retrieveSound = new Audio('/static/audios/Cast.mp3');
+
     if(lines.length >= 3){
         fetch(`/api/retrieve?lines=${JSON.stringify(lines)}`)
         .then(res => res.json())
@@ -49,6 +51,7 @@ function retrieveSpell(){
 
                 document.getElementById('fullSpellName').textContent = data.full_spell_name;
                 document.getElementById('nexusCostTotal').textContent = nexusCost();
+                retrieveSound.play();
             }
         });
     }else if(lines.length >= 2){
@@ -68,6 +71,7 @@ function retrieveSpell(){
                 document.getElementById('manaCostTotal').textContent = data.mana_cost; 
                 document.getElementById('fullSpellName').textContent = data.full_spell_name;
                 document.getElementById('nexusCostTotal').textContent = nexusCost();
+                retrieveSound.play();
             }
         });
     }
@@ -124,6 +128,7 @@ function clearPartial(){
     dragging = false;
     hoveredNode = -1;
     table.redraw();
+    dragSound.currentTime = 0; // Sets dragging audio back to start
 }
 
 //Clears the current selection
@@ -142,6 +147,13 @@ function clearAll() {
     dragging = false; //ends dragging
     hoveredNode = -1; // stops hovering
     table.redraw(); // resets the drawing as well
+    dragSound.currentTime = 0; // Sets dragging audio back to start
+}
+
+//Just for the clear button so it can play audio as well
+function clearAllButton() {
+    // Play a sound here
+    clearAll();
 }
 
 //Draw the lines with arrows to denote direction
@@ -193,6 +205,7 @@ let dragging = false;
 let hoveredNode = -1;
 let table_width = 3
 let nodeSize = 80 * (3 / table_width);
+let dragSound = new Audio('/static/audios/Casting.mp3');
 
 //Smaller table option should stay hidden at first
 document.getElementById("smallerTableButton").style.visibility = "hidden";
@@ -266,7 +279,7 @@ let table = new p5(function(p) { // Use p to access p5 functions directly
             }
 
             p.noStroke();
-            let nodeSize = 80 * (3 / table_width);
+            nodeSize = 80 * (3 / table_width);
             p.ellipse(pos.x, pos.y, nodeSize, nodeSize); // Draw the circle over the node with the correct color to denote its state
         }
     };
@@ -301,6 +314,7 @@ let table = new p5(function(p) { // Use p to access p5 functions directly
         let n = nearestNode(p.mouseX, p.mouseY);
 
         if (n !== -1 && !currentLine.includes(n) && usedNodes()[n] === undefined) {//if near a node and it is not in the current line and it is unused
+            dragSound.play();
             dragging = true; // Needed so you don't have to click at a specific node to begin drawing
             currentLine.push(n);
         }
@@ -314,6 +328,17 @@ let table = new p5(function(p) { // Use p to access p5 functions directly
         }
         dragging = false; 
         currentLine = []; // empty the line
+
+        // fading out audio
+        let fadeOut = setInterval(() => {
+            dragSound.volume = Math.max(0, dragSound.volume - 0.2);
+            if (dragSound.volume <= 0) {
+                clearInterval(fadeOut);
+                dragSound.pause();
+                dragSound.volume = 1; // reset volume for next time
+            }
+        }, 50);
+
         p.redraw();
     };
 
