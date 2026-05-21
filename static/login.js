@@ -35,3 +35,7 @@ function register(){
         }
     })
 }
+
+function guestLogIn(){
+    window.location.href = "/table";
+}
