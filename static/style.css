@@ -135,7 +135,7 @@ form {
     background-color: #f5f5dc;
     padding: 20px;
     border-radius: 8px;
-    margin-top: 100px; /*The space between the bottom questions and the rest of the board and buttons*/
+    margin-top: 10px; /*The space between the bottom questions and the rest of the board and buttons*/
 }
 
 /*Use this later to edit how the canvas looks*/
@@ -154,4 +154,27 @@ form {
 #node-canvas canvas {
     display: block;
     border-radius: 20px;
+}
+
+/*Pop Up Info*/
+.popupSpellInfo {
+    background-color: rgb(35, 8, 47);
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    opacity: 0;
+    z-index: -1;
+    transition: all 0.2s ease-in-out;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+
+.popupSpellInfo.open {
+    opacity: 1;
+    z-index: 999;
 }

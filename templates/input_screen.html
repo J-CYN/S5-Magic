@@ -9,7 +9,7 @@
     <header>
         <h1>Laurefell Magic</h1>
     </header>
-        <p class="spellInfo" id="fullSpellName">A Very Cool Description</p>
+        <p class="spellInfo" id="fullSpellName">Spell Name</p>
         <p class="spellInfo" id="manaCostTotal">Mana Cost</p>
         <p class="spellInfo" id="nexusCostTotal">Nexus Cost</p>
         <div class="buttons_and_form">
@@ -26,28 +26,34 @@
                     </div>
                     <button id="largerTableButton" class="largerTableButton" onclick="largerTable()">Larger Table</button>
                 </div>
-                <form class="form-total">
-                    <div class="form-group">
-                        <label for="element-input">Element Name:</label>
-                        <input type="text" id="element-input" name="element_name">
+                    <div class="popupSpellInfo" id="popupSpellInfo">
+                        <p class="spellInfo" id="fullSpellNamePopUp">A Very Cool Description</p>
+                        <p class="spellInfo" id="manaCostTotalPopUp">Mana Cost</p>
+                        <p class="spellInfo" id="nexusCostTotalPopUp">Nexus Cost</p>
+                        <form class="form-total">
+                            <div class="form-group">
+                                <label for="element-input">Element Name:</label>
+                                <input type="text" id="element-input" name="element_name">
+                            </div>
+                            <div class="form-group">
+                                <label for="spell-name-input">Spell Name:</label>
+                                <input type="text" id="spell-name-input" name="name_full">
+                            </div>
+                            <div class="form-group">
+                                <label for="mana-spell-input">Spell Mana Cost:</label>
+                                <input type="text" id="mana-spell-input" name="mana_spell_cost">
+                            </div>
+                            <div class="form-group">
+                                <label for="modifier-name-input">Modifier Name:</label>
+                                <input type="text" id="modifier-name-input" name="modifier_name">
+                            </div>
+                            <div class="form-group">
+                                <label for="mana-modifier-input">Modifier Mana Cost:</label>
+                                <input type="text" id="mana-modifier-input" name="mana_modifier_cost">
+                        </div>
+                        </form>
+                        <button class="subbutton" id="closePopup" onclick="closePopup()">Close</button>
                     </div>
-                    <div class="form-group">
-                        <label for="spell-name-input">Spell Name:</label>
-                        <input type="text" id="spell-name-input" name="name_full">
-                    </div>
-                    <div class="form-group">
-                        <label for="mana-spell-input">Spell Mana Cost:</label>
-                        <input type="text" id="mana-spell-input" name="mana_spell_cost">
-                    </div>
-                    <div class="form-group">
-                        <label for="modifier-name-input">Modifier Name:</label>
-                        <input type="text" id="modifier-name-input" name="modifier_name">
-                    </div>
-                    <div class="form-group">
-                        <label for="mana-modifier-input">Modifier Mana Cost:</label>
-                        <input type="text" id="mana-modifier-input" name="mana_modifier_cost">
-                    </div>
-                </form>
             </div>
         </div>
     <script src="{{ url_for('static', filename='script.js') }}"></script>

@@ -26,6 +26,7 @@ function submitSpell(){
 // Retrieves the spell and updates the surrounding texts
 function retrieveSpell(){
     let retrieveSound = new Audio('/static/audios/Cast.mp3');
+    retrieveSound.volume=0.25
 
     if(lines.length >= 3){
         fetch(`/api/retrieve?lines=${JSON.stringify(lines)}`)
@@ -43,15 +44,21 @@ function retrieveSpell(){
 
                 if (data.mana_cost >= 50){ // Mana cost can't be below 50
                     document.getElementById('manaCostTotal').textContent = data.mana_cost;
+                    document.getElementById('manaCostTotalPopUp').textContent = data.mana_cost;
                 }else {
                     document.getElementById('manaCostTotal').textContent = 50; 
+                    document.getElementById('manaCostTotalPopUp').textContent = data.mana_cost;
                 }
                 document.getElementById('mana-spell-input').value = data.spell_mana_cost;
                 document.getElementById('mana-modifier-input').value = data.modifier_mana_cost;
 
                 document.getElementById('fullSpellName').textContent = data.full_spell_name;
                 document.getElementById('nexusCostTotal').textContent = nexusCost();
+
+                document.getElementById('fullSpellNamePopUp').textContent = data.full_spell_name;
+                document.getElementById('nexusCostTotalPopUp').textContent = nexusCost();
                 retrieveSound.play();
+                openPopup()
             }
         });
     }else if(lines.length >= 2){
@@ -72,6 +79,7 @@ function retrieveSpell(){
                 document.getElementById('fullSpellName').textContent = data.full_spell_name;
                 document.getElementById('nexusCostTotal').textContent = nexusCost();
                 retrieveSound.play();
+                openPopup()
             }
         });
     }
@@ -140,7 +148,7 @@ function clearAll() {
     document.getElementById('manaCostTotal').textContent = "Mana Cost";
     document.getElementById('element-input').value = "";
     document.getElementById('modifier-name-input').value = "";
-    document.getElementById('fullSpellName').textContent = "???";
+    document.getElementById('fullSpellName').textContent = "Spell Name";
     document.getElementById('nexusCostTotal').textContent = "Nexus Cost";
     lines = []; // empties lines
     currentLine = []; // empties current lines
@@ -198,6 +206,15 @@ function smallerTable(){
     }
 }
 
+// Pop Up Info functions
+function openPopup(){
+    document.getElementById("popupSpellInfo").classList.add("open")
+}
+
+function closePopup(){
+    document.getElementById("popupSpellInfo").classList.remove("open")
+}
+
 //Init variables
 let lines = [];
 let currentLine = [];
@@ -206,6 +223,7 @@ let hoveredNode = -1;
 let table_width = 3
 let nodeSize = 80 * (3 / table_width);
 let dragSound = new Audio('/static/audios/Casting.mp3');
+dragSound.volume = 0.25
 
 //Smaller table option should stay hidden at first
 document.getElementById("smallerTableButton").style.visibility = "hidden";
@@ -331,11 +349,11 @@ let table = new p5(function(p) { // Use p to access p5 functions directly
 
         // fading out audio
         let fadeOut = setInterval(() => {
-            dragSound.volume = Math.max(0, dragSound.volume - 0.2);
+            dragSound.volume = Math.max(0, dragSound.volume - 0.05);
             if (dragSound.volume <= 0) {
                 clearInterval(fadeOut);
                 dragSound.pause();
-                dragSound.volume = 1; // reset volume for next time
+                dragSound.volume = 0.25; // reset volume for next time
             }
         }, 50);
 

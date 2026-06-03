@@ -94,9 +94,25 @@ def create():
    finally:
       con.close()
 
+   try:
+      con = sqlite3.connect(NamePath)
+      con.execute("PRAGMA journal_mode=WAL;")
+      cur = con.cursor()
+      cur.execute("""
+         CREATE TABLE IF NOT EXISTS NameTable(
+            name TEXT PRIMARY KEY,
+            userCred TEXT NOT NULL
+         );
+      """)
+      con.commit()
+   finally:
+      con.close()
+
+
 ElementalPath, SpellsPath, ModifierPath = database_selector(3)
 LoginPath = os.path.join(BASE_DIR, "Login.db")
 AccountPath = None
+NamePath = os.path.join(BASE_DIR, "Name.db")
 
 app = Flask(__name__)
 create()
